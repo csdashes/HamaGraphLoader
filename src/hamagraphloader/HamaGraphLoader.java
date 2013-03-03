@@ -4,6 +4,19 @@
  */
 package hamagraphloader;
 
+import java.io.IOException;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hama.HamaConfiguration;
+import org.apache.hama.bsp.HashPartitioner;
+import org.apache.hama.bsp.TextInputFormat;
+import org.apache.hama.bsp.TextOutputFormat;
+import org.apache.hama.graph.GraphJob;
+
 /**
  *
  * @author Anastasis Andronidis <anastasis90@yahoo.gr>
@@ -12,8 +25,54 @@ public class HamaGraphLoader {
 
     /**
      * @param args the command line arguments
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ClassNotFoundException  
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+        if (args.length < 1) {
+            printUsage();
+        }
+
+        HamaConfiguration conf = new HamaConfiguration(new Configuration());
+        GraphJob graphJob = createJob(args, conf);
+
+        long startTime = System.currentTimeMillis();
+        if (graphJob.waitForCompletion(true)) {
+            System.out.println("Job Finished in "
+                    + (System.currentTimeMillis() - startTime) / 1000.0 + " seconds");
+        }
+
+    }
+
+    private static void printUsage() {
+        System.out.println("Usage: <input>");
+        System.exit(-1);
+    }
+
+    private static GraphJob createJob(String[] args, HamaConfiguration conf) throws IOException {
+        GraphJob graphJob = new GraphJob(conf, HamaGraphLoader.class);
+        graphJob.setJobName("Hama Graph Loader");
+        
+//        graphJob.setVertexClass(PageRankVertex.class);
+        graphJob.setInputPath(new Path(args[0]));
+
+        graphJob.setVertexIDClass(Text.class);
+        graphJob.setVertexValueClass(DoubleWritable.class);
+        graphJob.setEdgeValueClass(NullWritable.class);
+
+        graphJob.setInputFormat(TextInputFormat.class);
+        
+        graphJob.setInputKeyClass(LongWritable.class);
+        graphJob.setInputValueClass(Text.class);
+      
+//        graphJob.setVertexInputReaderClass(PagerankTextReader.class);
+        graphJob.setPartitioner(HashPartitioner.class);
+
+        graphJob.setOutputFormat(TextOutputFormat.class);
+        graphJob.setOutputKeyClass(Text.class);
+        graphJob.setOutputValueClass(DoubleWritable.class);
+        
+        return graphJob;
     }
 }
