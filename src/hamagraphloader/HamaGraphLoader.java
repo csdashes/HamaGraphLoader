@@ -29,7 +29,7 @@ public class HamaGraphLoader {
      * @throws ClassNotFoundException  
      */
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
-        if (args.length < 1) {
+        if (args.length != 2) {
             printUsage();
         }
 
@@ -45,7 +45,7 @@ public class HamaGraphLoader {
     }
 
     private static void printUsage() {
-        System.out.println("Usage: <input>");
+        System.out.println("Usage: <input> <output>");
         System.exit(-1);
     }
 
@@ -53,9 +53,12 @@ public class HamaGraphLoader {
         GraphJob graphJob = new GraphJob(conf, HamaGraphLoader.class);
         graphJob.setJobName("Hama Graph Loader");
         
-//        graphJob.setVertexClass(PageRankVertex.class);
+        graphJob.setVertexClass(GraphLoaderVertex.class);
         graphJob.setInputPath(new Path(args[0]));
+        graphJob.setOutputPath(new Path(args[1]));
 
+        graphJob.setMaxIteration(2);
+        
         graphJob.setVertexIDClass(Text.class);
         graphJob.setVertexValueClass(LongWritable.class);
         graphJob.setEdgeValueClass(NullWritable.class);
@@ -64,8 +67,8 @@ public class HamaGraphLoader {
         
         graphJob.setInputKeyClass(LongWritable.class);
         graphJob.setInputValueClass(Text.class);
-      
-//        graphJob.setVertexInputReaderClass(PagerankTextReader.class);
+        graphJob.setVertexInputReaderClass(GraphLoaderTextReader.class);
+
         graphJob.setPartitioner(HashPartitioner.class);
 
         graphJob.setOutputFormat(TextOutputFormat.class);
