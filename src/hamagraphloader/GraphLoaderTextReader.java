@@ -6,7 +6,6 @@ package hamagraphloader;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -18,13 +17,13 @@ import org.apache.hama.graph.VertexInputReader;
  *
  * @author Anastasis Andronidis <anastasis90@yahoo.gr>
  */
-public class GraphLoaderTextReader extends VertexInputReader<LongWritable, Text, Text, NullWritable, DoubleWritable> {
+public class GraphLoaderTextReader extends VertexInputReader<LongWritable, Text, Text, NullWritable, LongWritable> {
 
     String lastVertexId = null;
     List<String> adjacents = new ArrayList<String>();
     
     @Override
-    public boolean parseVertex(LongWritable key, Text value, Vertex<Text, NullWritable, DoubleWritable> vertex) throws Exception {
+    public boolean parseVertex(LongWritable key, Text value, Vertex<Text, NullWritable, LongWritable> vertex) throws Exception {
         String line = value.toString();
         String[] lineSplit = line.split("\t");
         if (!line.startsWith("#")) {

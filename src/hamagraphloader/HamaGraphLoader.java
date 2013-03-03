@@ -7,7 +7,6 @@ package hamagraphloader;
 import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -58,7 +57,7 @@ public class HamaGraphLoader {
         graphJob.setInputPath(new Path(args[0]));
 
         graphJob.setVertexIDClass(Text.class);
-        graphJob.setVertexValueClass(DoubleWritable.class);
+        graphJob.setVertexValueClass(LongWritable.class);
         graphJob.setEdgeValueClass(NullWritable.class);
 
         graphJob.setInputFormat(TextInputFormat.class);
@@ -71,7 +70,7 @@ public class HamaGraphLoader {
 
         graphJob.setOutputFormat(TextOutputFormat.class);
         graphJob.setOutputKeyClass(Text.class);
-        graphJob.setOutputValueClass(DoubleWritable.class);
+        graphJob.setOutputValueClass(LongWritable.class);
         
         return graphJob;
     }
