@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>60</x>
+      <y>100</y>
+      <w>330</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+VertexInterface
+--
+
+--
++setup(conf: Configuration)
++getVertexID(): V
++getNumVertices(): long
++compute(messages: Iterator&lt;M&gt;)
++getEdges(): List&lt;Edge&gt;
++sendMessage(e: Edge,msg: M)
++sendMessage(destinationVertexID: V,msg:M)
++sendMessagesToNeighbors(msg: M)
++getSuperstepCount(): long
++voteToHalt()
++setValue(value: M)
++getValue(): M</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>160</x>
+      <y>320</y>
+      <w>136</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+implements</panel_attributes>
+    <additional_attributes>70;30;70;90</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>60</x>
+      <y>420</y>
+      <w>390</w>
+      <h>620</h>
+    </coordinates>
+    <panel_attributes>/Vertex/
+--
+runner: GraphJobRunner
+-vertextID: V
+-value: M
+-edges: List&lt;Edge&gt;
+-voteToHalt: boolean
+--
++setup(conf: Configuration)
++getVertexID(): V
++getNumVertices(): long
++compute(messages: Iterator&lt;M&gt;)
++getEdges(): List&lt;Edge&gt;
++sendMessage(e: Edge,msg: M)
++sendMessage(destinationVertexID: V,msg:M)
++sendMessagesToNeighbors(msg: M)
++getSuperstepCount(): long
++voteToHalt()
++setValue(value: M)
++getValue(): M
+--
++getConf(): Configuration
++getDestinationPeerName(edge: Edge)
++getDestinationPeerName(vertexID: V)
++setEdges(list: List&lt;Edge&gt;)
++addEdge(edge: Edge)
++setVertexID(vertexID: V)
++getMaxIterations(): int
++getLastAggregatedValue(index: int): IntWritable
++getNumLastAggregatedVertices(index: int): IntWritable
++getNumPeers(): int
++getPeer(): BSPPeer
++getPartitioner(): Partitioner
++setActive()
++isHalted(): boolean
++hashCode(): int
++equals(obj Object): boolean
++toString(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>540</x>
+      <y>330</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>BSPJob
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>530</x>
+      <y>330</y>
+      <w>112</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+extends</panel_attributes>
+    <additional_attributes>60;30;60;90</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>480</x>
+      <y>420</y>
+      <w>260</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>GraphJob
+--
++some static Strings
+--
++setVertexClass(cls: Class)
++getVertexClass(): Class
++setVertexIDClass(cls: Class)
++setVertexClassValue(cls: Class)
++setEdgeValueClass(cls: Class)
++setAggregatorClass(cls: Class)
++setVertexInputReader(cls: Class)
++setPartitioner(cls: Class)
++setConbinerClass(cls: Class)
++setMaxIteration(maxIteration: int)
++submit()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>60</x>
+      <y>30</y>
+      <w>390</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/VertexInputReader/
+--
++parseVertex(key: KEYIN,value: VALUEIN,vertex: Vertex)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>420</x>
+      <y>100</y>
+      <w>270</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Edge
+--
+-destinationVertexID: VERTEX_ID
+-cost: EDGE_VALUE_TYPE
+--
++getDestinationVertexID(): VERTEX_ID
++getValue(): EDGE_VALUE_TYPE
++toString()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>770</x>
+      <y>420</y>
+      <w>470</w>
+      <h>730</h>
+    </coordinates>
+    <panel_attributes>GraphJobRunner
+--
++some static Strings
+-conf: Configuration
+-combiner: Combiner
+-partitioner: Partitioner
+-vertices: List&lt;Vertex&gt;
+-updated: boolean
+-globalUpdateCounts: int
+-numberVertices: long
+-maxIteration: int
+-iteration: long
+-vertexIDClass: Class
+-vertexValueClas: Class
+-edgeValueClass: Class
+-vertexClass: Class
+-aggregatorRunner: AggregatorRunner
+-peer: BSPPeer
+--
++setup(peer: BSPPeer)
++bsp(peer: BSPPeer)
++cleanup(peer: BSPPeer)
+-doMasterUpdates(peer: BSPPeer)
+-doSuperstep(peer: BSPPeer)
+-doInitialSuperstep(peer: BSPPeer)
+-setupFields(peer: BSPPeer)
+-loadVertices(peer: BSPPeer)
+-repair(peer: BSPPeer)
+-partitionMultiSteps(peer: BSPPeer, splitSize: long): int
+-countGlobalVertexCount(peer: BSPPeer)
+-parseMessages(peer: BSPPeer): Map
++getNumberVertices(): long
++getNumberIterations(): long
++getMaxIteration(): int
++getPartitioner(): Partitioner
++getLastAggregatedValue(index: int): Writable
++getNumLastAggregatedVertices(index: int): IntWritable
++getPeer(): BSPPeer
++isMasterTask(peer: BSPPeer): boolean
++getMasterTask(peer: BSPPeer): String
++newVertexInstance(vertexClass: Class,conf: Configuration): vertex</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>850</x>
+      <y>330</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>/BSP/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>530</x>
+      <y>240</y>
+      <w>130</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>BSPJobContext</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>530</x>
+      <y>240</y>
+      <w>112</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+extends</panel_attributes>
+    <additional_attributes>60;30;60;90</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>840</x>
+      <y>330</y>
+      <w>112</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+extends</panel_attributes>
+    <additional_attributes>60;30;60;90</additional_attributes>
+  </element>
+</diagram>
