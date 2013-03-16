@@ -11,3 +11,25 @@ nbproject/
 # Class Files #
 *.class
 *.properties
+
+nbproject/genfiles.properties
+
+nbproject/build-impl.xml
+
+nbproject/project.properties
+
+nbproject/project.xml
+
+lib/ant-1.7.1.jar
+
+lib/ant-launcher-1.7.1.jar
+
+lib/avro-ipc-1.6.0.jar
+
+lib/avro-1.6.0.jar
+
+lib/commons-cli-1.2.jar
+
+lib/commons-configuration-1.7.jar
+
+*.jar
