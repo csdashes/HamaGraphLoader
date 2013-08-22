@@ -37,6 +37,9 @@ public class HamaGraphLoader {
         HamaConfiguration conf = new HamaConfiguration(new Configuration());
         GraphJob graphJob = createJob(args, conf);
 
+//        System.out.println(graphJob.getNumBspTask());
+//        System.out.println(graphJob.get("bsp.local.tasks.maximum"));
+        
         long startTime = System.currentTimeMillis();
         if (graphJob.waitForCompletion(true)) {
             System.out.println("Job Finished in "
@@ -51,7 +54,15 @@ public class HamaGraphLoader {
     }
 
     private static GraphJob createJob(String[] args, HamaConfiguration conf) throws IOException {
+        conf.set("bsp.local.tasks.maximum", "1");
+//        conf.set("bsp.tasks.maximum", "2");
+//        conf.set("bsp.max.tasks.per.job", "2");
+//        conf.set("mapred.map.tasks", "1");
+//        conf.set("mapred.min.split.size", String.valueOf(Long.MAX_VALUE));
+        
         GraphJob graphJob = new GraphJob(conf, HamaGraphLoader.class);
+        
+        graphJob.setNumBspTask(1);
         graphJob.setJobName("Hama Graph Loader");
         
         graphJob.setVertexClass(GraphLoaderVertex.class);

@@ -19,15 +19,16 @@ public class GraphLoaderVertex extends Vertex<Text, NullWritable, LongWritable> 
 
     @Override
     public void compute(Iterator<LongWritable> messages) throws IOException {
-        if (this.getSuperstepCount() == 0) {
+        if (this.getSuperstepCount() == 0L) {
+            setValue(new LongWritable(0));
             sendMessageToNeighbors(new LongWritable(1L));            
         } else {
-            Long sum = 0L;
             while (messages.hasNext()) {
                 LongWritable msg = messages.next();
-                sum += msg.get();
+                this.setValue(new LongWritable(this.getValue().get() + msg.get()));
             }
-        }
+            voteToHalt();
+        }        
     }
     
 }
